@@ -1,32 +1,70 @@
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
 
-const Navbar: React.FC = () => {
-  // const [isOpen, setIsOpen] = useState<boolean>(false);
+const navigation = [
+  { name: 'ChatPDF', to: '/', current: true },
+  { name: 'Login', to: '/login', current: false },
+  { name: 'Sign Up', to: '/signup', current: false },
+  { name: 'AI PDF', to: '/aipdf', current: false },
+];
 
+function classNames(...classes: string[]): string {
+  return classes.filter(Boolean).join(' ');
+}
+
+export default function Example() {
   return (
-    <nav>
-      <div className='flex '>
-        <div>
-          <Link to="/">Logo</Link> {/* Corrected the 'to' attribute */}
+    <Disclosure as="nav" className="bg-white-800" style={{ borderBottom:"1px solid #9ca3af"}}>
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          <div className="flex items-center justify-start flex-1">
+            <div className="flex-shrink-0">
+              <img
+                alt="Your Company"
+                src=""
+                className="h-8 w-auto"
+              />
+            </div>
+          </div>
+
+          <div className="hidden sm:flex sm:items-center sm:justify-end flex-1">
+            <div className="flex space-x-10">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.to}
+                  aria-current={item.current ? 'page' : undefined}
+                  className={classNames(
+                    item.current ? 'bg-gray-900 text-white' : 'text-black-300 hover:bg-gray-700 hover:text-white',
+                    'rounded-md px-3 py-2 text-sm font-medium',
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-        
-        <div>
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 ">
-          
-          <li >  <Link to ="/sign">Sign</Link></li>
-        
-        
-        
-         <li> <Link to = "/Login">Log in</Link></li>
-          <li> <Link to = "/AIPDF">AI PDF</Link></li>
-        
-          </ul>
+      </div>
 
-      </div>
-      </div>
-    </nav>
+      <DisclosurePanel className="sm:hidden">
+        <div className="space-y-1 px-2 pb-3 pt-2">
+          {navigation.map((item) => (
+            <DisclosureButton
+              key={item.name}
+              as="a"
+              href={item.to}
+              aria-current={item.current ? 'page' : undefined}
+              className={classNames(
+                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                'block rounded-md px-3 py-2 text-base font-medium',
+              )}
+            >
+              {item.name}
+            </DisclosureButton>
+          ))}
+        </div>
+      </DisclosurePanel>
+    </Disclosure>
   );
-};
-
-export default Navbar;
+}
